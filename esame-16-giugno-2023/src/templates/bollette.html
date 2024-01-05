@@ -1,0 +1,5 @@
+<h1>Lista delle bollette</h1>
+
+{% for b in lista_bollette %}
+    <li>Bolletta del mese <a href="/bolletta/{{b.id}}">{{b.id}}</a></li>
+{% endfor %}

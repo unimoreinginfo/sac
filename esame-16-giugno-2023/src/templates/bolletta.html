@@ -1,0 +1,13 @@
+<h1>Dettaglio bolletta del mese <u>{{bolletta.id}}</u></h1>
+<h3>Periodo di riferimento: {{ rif }}</h3>
+<ul>
+    <li>Costo complessivo: €{{ bolletta.costo_complessivo }}</li>
+    <li>Ultima lettura considerata (kW/h): {{ ultima_lettura }}</li>
+    Tutte le letture (kW/h): <ul>
+        {% for lettura in bolletta.letture %}
+        <li>
+            {{ lettura }}
+        </li>
+        {% endfor %}
+    </ul>
+</ul>

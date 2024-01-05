@@ -1,0 +1,83 @@
+- api_name: "consumi/{date}"
+  tests:
+    # CLEAN
+    - title: "clean"
+      url: "/api/v1/clean"
+      method: POST
+      exp_rc: 200
+    # Wrong GET requests
+    - title: "GET#01"
+      url: "/api/v1/consumi/-10-2022"
+      method: GET
+      exp_rc: 400
+    - title: "GET#02"
+      url: "/api/v1/consumi/ababa"
+      method: GET
+      exp_rc: 400
+    - title: "GET#03"
+      url: "/api/v1/consumi/32-13-2022"
+      method: GET
+      exp_rc: 400
+    # GET with 0 samples in history
+    - title: "GET#04"
+      url: "/api/v1/consumi/1-10-2022"
+      method: GET
+      exp_rc: 200
+      exp_body: "{\"value\": 0, \"isInterpolated\": true}"
+    # Wrong POST requests
+    - title: "POST#01"
+      url: "/api/v1/consumi/1-10-2022"
+      method: POST
+      body: "{}"
+      exp_rc: 400
+    - title: "POST#02"
+      url: "/api/v1/consumi/1-10-2022"
+      method: POST
+      body: "{\"value\": -10}"
+      exp_rc: 400
+    - title: "POST#03"
+      url: "/api/v1/consumi/1-10-2022"
+      method: POST
+      body: "{\"value\": \"1000\"}"
+      exp_rc: 400
+    - title: "POST#04"
+      url: "/api/v1/consumi/1-10-2022"
+      method: POST
+      body: "{\"value\": \"ababa\"}"
+      exp_rc: 400
+    # Valid POST
+    - title: "POST#05"
+      url: "/api/v1/consumi/1-10-2022"
+      method: POST
+      body: "{\"value\": 1000}"
+      exp_rc: 201
+      exp_body: "{\"value\": 1000, \"isInterpolated\": false}"      
+    # Double POST (Conflict)
+    - title: "POST#06"
+      url: "/api/v1/consumi/1-10-2022"
+      method: POST
+      body: "{\"value\": 1000}"
+      exp_rc: 409
+    # GET with 1 sample in history
+    - title: "GET#05"
+      url: "/api/v1/consumi/1-10-2022"
+      method: GET
+      exp_rc: 200
+      exp_body: "{\"value\": 1000, \"isInterpolated\": false}"
+    - title: "GET#06"
+      url: "/api/v1/consumi/15-10-2022"
+      method: GET
+      exp_rc: 200
+      exp_body: "{\"value\": 1000, \"isInterpolated\": true}"
+    # Test interpolation
+    - title: "POST#07"
+      url: "/api/v1/consumi/1-11-2022"
+      method: POST
+      body: "{\"value\": 1200}"
+      exp_rc: 201
+      exp_body: "{\"value\": 1200, \"isInterpolated\": false}"      
+    - title: "GET#06"
+      url: "/api/v1/consumi/2-12-2022"
+      method: GET
+      exp_rc: 200
+      exp_body: "{\"value\": 1400, \"isInterpolated\": true}"

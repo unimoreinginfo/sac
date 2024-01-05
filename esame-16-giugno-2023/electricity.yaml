@@ -1,0 +1,73 @@
+swagger: "2.0"
+
+info:
+  version: "1.0"
+  title: "Electricity"
+  description: "A web-based application for the management electricity bills"
+
+host: "sac-emilianomaccaferri.appspot.com"
+basePath: "/api/v1"
+
+schemes:
+  - https
+
+paths:
+  /clean:
+    get:
+      description: "Clean the database storing the samples"
+      operationId: "cleanDatabase"
+      responses:
+        200: 
+          description: "Ok" 
+  /consumi/{data}:
+    parameters:
+      - name: data
+        in: path
+        required: true
+        description: "Date of sample in format DD-MM-YYYY"
+        type: string
+        format: date
+    post:
+      description: "Insert a new sample"
+      operationId: "PostSample"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: NewSample
+          required: true
+          description: "Value of the new sample"
+          schema:
+            properties:
+              value:
+                type: integer
+      responses:
+        201:
+          description: "Success."
+          schema:
+            $ref: "#/definitions/Sample"
+        400:
+          description: "Generic error."
+        409:
+          description: "Conflict."
+    get:
+      description: "Get info of the selected sample"
+      operationId: "GetSample"
+      responses:
+        200:
+          description: "Return the details of the selected sample"
+          schema:
+            $ref: "#/definitions/Sample"
+        400:
+          description: "Generic error."
+definitions:
+  Sample:
+    type: object
+    required:
+      - value
+      - isInterpolated
+    properties:
+      value:
+        type: integer
+      isInterpolated:
+        type: boolean
