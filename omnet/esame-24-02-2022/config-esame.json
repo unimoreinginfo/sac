@@ -1,0 +1,87 @@
+{
+	"scenario_schema": {
+		"rho": {"pattern": "**.rho", "type": "real"},
+		"cv": {"pattern": "**.cv", "type": "real"}
+	},
+	"metrics": {
+		"Tresp": { 
+			"module": "**.sink", 
+			"scalar_name": "lifeTime:mean", 
+			"aggr": ["none"]
+		},
+		"Tqueue": {
+			"module": "**.sink",
+			"scalar_name": "totalQueueingTime:mean",
+			"aggr": ["none"]
+		}
+	},
+	"analyses": {
+		"r07_cov05": {
+			"outfile": "analyses/r07_cov05.csv",
+			"scenarios": {
+				"fixed": { "rho": "0.7", "cv": "0.5" },
+				"range": []
+			},
+			"metrics": [
+				{"metric": "Tresp", "aggr": "none" },
+				{"metric": "Tqueue", "aggr": "none" }
+			]
+		},
+		"r07_cov10": {
+			"outfile": "analyses/r07_cov10.csv",
+			"scenarios": {
+				"fixed": { "rho": "0.7", "cv": "1.0" },
+				"range": []
+			},
+			"metrics": [
+				{"metric": "Tresp", "aggr": "none" },
+				{"metric": "Tqueue", "aggr": "none" }
+			]
+		},	
+		"r07_cov15": {
+			"outfile": "analyses/r07_cov15.csv",
+			"scenarios": {
+				"fixed": { "rho": "0.7", "cv": "1.5" },
+				"range": []
+			},
+			"metrics": [
+				{"metric": "Tresp", "aggr": "none" },
+				{"metric": "Tqueue", "aggr": "none" }
+			]
+		}, 
+		"r09_cov05": {
+			"outfile": "analyses/r09_cov05.csv",
+			"scenarios": {
+				"fixed": { "rho": "0.9", "cv": "0.5" },
+				"range": []
+			},
+			"metrics": [
+				{"metric": "Tresp", "aggr": "none" },
+				{"metric": "Tqueue", "aggr": "none" }
+			]
+		},
+		"r09_cov10": {
+			"outfile": "analyses/r09_cov10.csv",
+			"scenarios": {
+				"fixed": { "rho": "0.9", "cv": "1.0" },
+				"range": []
+			},
+			"metrics": [
+				{"metric": "Tresp", "aggr": "none" },
+				{"metric": "Tqueue", "aggr": "none" }
+			]
+		},
+		"r07_cov15": {
+			"outfile": "analyses/r09_cov15.csv",
+			"scenarios": {
+				"fixed": { "rho": "0.9", "cv": "1.5" },
+				"range": []
+			},
+			"metrics": [
+				{"metric": "Tresp", "aggr": "none" },
+				{"metric": "Tqueue", "aggr": "none" }
+			]
+		}
+
+	}
+}
