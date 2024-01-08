@@ -1,0 +1,32 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChirpTag&trade; {{ chirptag_name }}</title>
+</head>
+<body>
+    <section>
+        <h1>Messaggi per il ChirpTag&trade; <i>#{{ chirptag_name }}</i></h1>
+        {% for message in mess_keys %}
+        <li>
+            {{ message[0] }}, con timestamp <b>{{ chirptag.messages[loop.index0][message[0]] }}</b>
+        </li>
+        {% endfor %}
+    </section>
+</body>
+</html>
+<script>
+    function addChirp(){
+        const text = $("#chirp_text").val();
+        const result = $.ajax({
+            type: "POST",
+            url: '/api/v1/chirps',
+            data: JSON.stringify(text),
+            contentType: 'application/json',
+            success: (data) => {
+                $("#after_chirp_message").text("Il tuo Chirp™ è stato inserito")
+            },
+            dataType: 'json'
+        });
+    }
+</script>

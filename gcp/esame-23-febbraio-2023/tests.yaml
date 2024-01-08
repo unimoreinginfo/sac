@@ -1,0 +1,20 @@
+- api_name: "Chirps"
+  tests:
+    # CLEAN
+    - title: "clean"
+      url: "/api/v1/clean"
+      method: POST
+      exp_rc: 200
+    # Correct POST requests
+    - title: "POST#01"
+      url: "/api/v1/chirps"
+      method: POST
+      body: "A real message with #hastag1,#hashtag2"
+      exp_rc: 200
+      exp_body: "{\"message\": \"A real message with #hastag1,#hashtag2\", \"hashtags\": [\"#hashtag1\", \"#hashtag2\"], \"timestamp\": \"{{dummy}}\", \"id\": \"{{id1}}\"}" 
+    # Wrong POST requests
+    - title: "POST#01"
+      url: "/api/v1/chirps"
+      method: POST
+      body: ""
+      exp_rc: 400

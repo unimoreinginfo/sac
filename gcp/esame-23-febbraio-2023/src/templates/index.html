@@ -1,0 +1,60 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chirps&trade;</title>
+    <script
+			  src="https://code.jquery.com/jquery-3.7.1.min.js"
+			  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+			  crossorigin="anonymous"></script>
+    <style>
+        section{
+            max-width: 870px;
+            width: 100%;
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        section .cont{
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+            flex: 1 1 350px;
+        }
+        input{
+            height: 45px;
+        }
+        button{
+            height: 45px;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <form class="cont" action="#" onsubmit="return addChirp()">
+            <input type="text" id="chirp_text" placeholder="Inserisci Chirp&trade;">
+            <button>Invia Chirp&trade;</button>
+            <span id="after_chirp_message"></span>
+        </form>
+        <form class="cont" method="GET" action="/chirptag" action="#">
+            <input type="text" name="value" placeholder="Inserisci ChirpTag&trade;">
+            <button>Ricerca ChirpTag&trade;</button>
+        </form>
+    </section>
+</body>
+</html>
+<script>
+    function addChirp(){
+        const text = $("#chirp_text").val();
+        const result = $.ajax({
+            type: "POST",
+            url: '/api/v1/chirps',
+            data: JSON.stringify(text),
+            contentType: 'application/json',
+            success: (data) => {
+                $("#after_chirp_message").text("Il tuo Chirp™ è stato inserito")
+            },
+            dataType: 'json'
+        });
+    }
+</script>

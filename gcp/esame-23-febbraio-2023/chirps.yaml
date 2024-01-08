@@ -1,0 +1,103 @@
+swagger: "2.0"
+
+info:
+  version: "1.0"
+  title: "Chirps"
+  description: "A web-based application for the management of social netowrk posts"
+
+host: "[YOUR_PROJECT_ID].appspot.com"
+basePath: "/api/v1"
+
+schemes:
+  - https
+
+paths:
+  /clean:
+    post:
+      description: "Clean the database storing the samples"
+      operationId: "cleanDatabase"
+      responses:
+        200: 
+          description: "Ok" 
+  /chirps/:
+    post:
+      description: "Insert a chirp"
+      operationId: "PostChirp"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: NewChirp
+          required: true
+          description: "Message"
+          schema:
+            type: string
+            # minLenght, maxLenght in schema with no parameter works only in next-gen swagger editor
+            minLenght: 1
+            maxLenght: 100
+            example: "A new message #withhashtag"
+      responses:
+        201:
+          description: "Success."
+          schema:
+            $ref: "#/definitions/Chirp"
+        400:
+          description: "Generic error."
+  /chirps/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: "Document id of the chirp"
+        type: string
+    get:
+      description: "Get info of the selected chirp"
+      operationId: "GetChirp"
+      responses:
+        200:
+          description: "Return the details of the selected Chirp"
+          schema:
+            $ref: "#/definitions/Chirp"
+        404:
+          description: "Not found"
+  /topics/{topic}:
+    parameters:
+      - name: topic
+        in: path
+        required: true
+        description: "Topic of interest"
+        type: string
+    get:
+      description: "Get list of message with hashtag #topic"
+      operationId: "GetTopic"
+      responses:
+        200:
+          description: "Return the list of selected topics"
+          schema:
+            $ref: "#/definitions/ChirpList"
+        404:
+          description: "Not found"
+          
+definitions:
+  Chirp:
+    type: object
+    required:
+      - id
+      - message
+      - timestamp
+    properties:
+      id:
+        type: string
+        example: "msgid1"
+      message:
+        type: string
+        example: "A New chirp with #hashtag1,#hastag2"
+      timestamp:
+        type: string
+        format: timestamp # YYYY-MM-DD HH:mm:S
+        example: "2023-02-01 13:00:01"
+  ChirpList:
+    type: array
+    items:
+      type: string
+    example: ["msgid1", "msgid2"]
