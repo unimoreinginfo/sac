@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabelluzzo OS (A Cisco&trade; division)</title>
+    <script
+			  src="https://code.jquery.com/jquery-3.7.1.min.js"
+			  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+			  crossorigin="anonymous"></script>
+</head>
+<body>
+    <table style="text-align: center;">
+        <tr>
+            <th>
+                Rete
+            </th>
+            <th>
+                CIDR netmask
+            </th>
+            <th>
+                Gateway
+            </th>
+            <th>
+                Device
+            </th>
+        </tr>
+        {% for rule in routing_table %}
+        <tr class="row" id="{{ rule.rule_id }}">
+            <td>
+                {{ rule.ip }}
+            </td>
+            <td>
+                {{ rule.netmaskCIDR }}
+            </td>
+            <td>
+                {{ rule.gw }}
+            </td>
+            <td>
+                {{ rule.device }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <form action="#" onsubmit="return getRoute()">
+        <input type="text" id="ip" placeholder="Inserire indirizzo IP">
+        <button>Route</button>
+    </form>
+    <script>
+        function getRoute(){
+            const text = $("#ip").val();
+            console.log(text)
+            const result = $.ajax({
+                type: "POST",
+                url: '/api/v1/routing',
+                data: JSON.stringify(text),
+                contentType: 'application/json',
+                success: (id) => {
+                    $(`.row`).css("background", "transparent")
+                    $(`.row`).css("color", "black")
+                    $(`#${id}`).css("background", "red")
+                    $(`#${id}`).css("color", "white")
+                },
+                dataType: 'json'
+            });
+        }
+    </script>
+</body>
+</html>

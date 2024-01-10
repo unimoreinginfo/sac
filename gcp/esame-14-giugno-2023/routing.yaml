@@ -1,0 +1,142 @@
+swagger: "2.0"
+
+info:
+  version: "1.0"
+  title: "Routing"
+  description: "A web-based application for the management of IPv4 routing"
+
+host: "[YOUR_PROJECT_ID].appspot.com"
+basePath: "/api/v1"
+
+schemes:
+  - http
+
+paths:
+  /clean:
+    post:
+      description: "Clean the database storing the routing rules"
+      operationId: "cleanDatabase"
+      responses:
+        200: 
+          description: "Ok" 
+  /routing/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: "id of the rule"
+        type: integer
+        minimum: 1
+    get:
+      description: "Retrieve a rule"
+      operationId: "GetRule"
+      responses:
+        200:
+          description: "Success."
+          schema:
+            $ref: "#/definitions/Rule"
+        404:
+          description: "Not found"
+    post:
+      description: "Insert a new rule"
+      operationId: "PostRule"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: rule
+          required: true
+          description: "New routing rule"
+          schema:
+            $ref: "#/definitions/Rule"
+      responses:
+        201:
+          description: "Success."
+          schema:
+            $ref: "#/definitions/Rule"
+        400:
+          description: "Generic error."
+        409:
+          description: "Conflict."
+    put:
+      description: "Update a rule"
+      operationId: "PutRule"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: rule
+          required: true
+          description: "New routing rule"
+          schema:
+            $ref: "#/definitions/Rule"
+      responses:
+        200:
+          description: "Success."
+          schema:
+            $ref: "#/definitions/Rule"
+        400:
+          description: "Generic error."
+        404:
+          description: "Not found"
+    delete:
+      description: "Delete a rule"
+      operationId: "DeleteRule"
+      responses:
+        204:
+          description: "Deleted"
+        404:
+          description: "not found"
+  /routing:
+    get:
+      description: "Retrieve list of rules"
+      operationId: "GetRuleList"
+      responses:
+        200:
+          description: "Success."
+          schema:
+            # returns list of rule ids sorted according to longest prefix principle
+            type: array
+            items:
+              type: string
+    post:
+      description: "Route"
+      operationId: "PostTestRule"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: ip
+          required: true
+          description: "IP to route"
+          schema:
+            type: string
+            format: ipv4
+      responses:
+        200:
+          description: "Success."
+          schema:
+            type: array
+            items:
+              type: integer
+        400:
+          description: "Generic error."
+definitions:
+  Rule:
+    type: object
+    required:
+      - ip
+      - netmaskCIDR
+      - gw
+      - device
+    properties:
+      ip:
+        type: string
+        format: ipv4
+      netmaskCIDR:
+        type: integer
+      gw:
+        type: string
+        format: ipv4
+      device:
+        type: string
