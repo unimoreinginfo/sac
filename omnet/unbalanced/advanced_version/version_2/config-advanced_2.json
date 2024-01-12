@@ -1,0 +1,30 @@
+{
+    "scenario_schema": {
+        "delta": {"pattern": "**.delta", "type": "int"}
+    },
+    "metrics": {
+        "hi_util": {"module": "**.srv_high", "scalar_name": "busy:timeavg" ,"aggr": ["none"]},
+        "low_util": {"module": "**.srv_low", "scalar_name": "busy:timeavg" ,"aggr": ["none"]},
+        "response_time_avg_sink_high": {"module": "**.sink_high", "scalar_name": "totalServiceTime:mean" ,"aggr": ["none"]},
+        "response_time_max_sink_high": {"module": "**.sink_high", "scalar_name": "totalServiceTime:max" ,"aggr": ["none"]},
+        "response_time_avg_sink_low": {"module": "**.sink_low", "scalar_name": "totalServiceTime:mean" ,"aggr": ["none"]},
+        "response_time_max_sink_low": {"module": "**.sink_low", "scalar_name": "totalServiceTime:max" ,"aggr": ["none"]}
+    },
+    "analyses": {
+        "SensCV": {
+            "outfile": "analyses/advanced2_analysis.data",
+            "scenarios": {
+                "fixed": {},
+                "range": ["delta"]
+            },
+            "metrics": [
+                {"metric": "response_time_avg_sink_high", "aggr": "none"},
+                {"metric": "response_time_max_sink_high", "aggr": "none"},
+                {"metric": "response_time_avg_sink_low", "aggr": "none"},
+                {"metric": "response_time_max_sink_low", "aggr": "none"},
+                {"metric": "low_util", "aggr": "none"},
+                {"metric": "hi_util", "aggr": "none"}
+            ]
+        }
+    }
+}

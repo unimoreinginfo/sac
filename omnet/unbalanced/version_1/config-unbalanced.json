@@ -1,0 +1,26 @@
+{
+    "scenario_schema": {
+        "delta": {"pattern": "**.delta", "type": "int"}
+    },
+    "metrics": {
+        "hi_util": {"module": "**.srv_high", "scalar_name": "busy:timeavg" ,"aggr": ["none"]},
+        "low_util": {"module": "**.srv_low", "scalar_name": "busy:timeavg" ,"aggr": ["none"]},
+        "response_time_avg": {"module": "**.sink", "scalar_name": "totalServiceTime:mean" ,"aggr": ["none"]},
+        "response_time_max": {"module": "**.sink", "scalar_name": "totalServiceTime:max" ,"aggr": ["none"]}
+    },
+    "analyses": {
+        "SensCV": {
+            "outfile": "analyses/unbalanced_analysis.data",
+            "scenarios": {
+                "fixed": {},
+                "range": ["delta"]
+            },
+            "metrics": [
+                {"metric": "response_time_avg", "aggr": "none"},
+                {"metric": "response_time_max", "aggr": "none"},
+                {"metric": "low_util", "aggr": "none"},
+                {"metric": "hi_util", "aggr": "none"}
+            ]
+        }
+    }
+}
