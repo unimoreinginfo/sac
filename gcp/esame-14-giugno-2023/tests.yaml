@@ -1,0 +1,155 @@
+- api_name: "route/{ruleid}"
+  tests:
+    # CLEAN
+    - title: "clean"
+      url: "/api/v1/clean"
+      method: POST
+      exp_rc: 200
+    # Wrong GET requests
+    - title: "GET#01"
+      url: "/api/v1/routing/10"
+      method: GET
+      exp_rc: 404
+    - title: "GET#02"
+      url: "/api/v1/routing/ababa"
+      method: GET
+      exp_rc: 400
+    - title: "GET#03"
+      url: "/api/v1/routing/-10"
+      method: GET
+      exp_rc: 400
+    - title: "GET#04"
+      url: "/api/v1/routing/1a"
+      method: GET
+      exp_rc: 400
+    # Wrong POST requests
+    - title: "POST#01" # Wrong IP
+      url: "/api/v1/routing/1"
+      method: POST
+      exp_rc: 400
+      body: "{\"ip\": \"192.168.1.\", \"netmaskCIDR\": 24, \"gw\": \"0.0.0.0\", \"device\": \"eth0\"}"
+    - title: "POST#02" # Wrong IP in GW
+      url: "/api/v1/routing/1"
+      method: POST
+      exp_rc: 400
+      body: "{\"ip\": \"192.168.1.0\", \"netmaskCIDR\": 24, \"gw\": \"a.0.0.0\", \"device\": \"eth0\"}"
+    - title: "POST#03" # Wrong IP
+      url: "/api/v1/routing/1"
+      method: POST
+      exp_rc: 400
+      body: "{\"ip\": \"192.168.300.0\", \"netmaskCIDR\": 24, \"gw\": \"0.0.0.0\", \"device\": \"eth0\"}"
+    - title: "POST#04" # missing parameter in tuple
+      url: "/api/v1/routing/1"
+      method: POST
+      exp_rc: 400
+      body: "{\"ip\": \"192.168.1.0\", \"gw\": \"0.0.0.0\", \"device\": \"eth0\"}"
+    - title: "POST#05" # IP is not a netID according to CIDR
+      url: "/api/v1/routing/1"
+      method: POST
+      exp_rc: 400
+      body: "{\"ip\": \"192.168.1.1\", \"netmaskCIDR\": 24, \"gw\": \"0.0.0.0\", \"device\": \"eth0\"}"
+    # Correct POST request
+    - title: "POST#06"
+      url: "/api/v1/routing/1"
+      method: POST
+      exp_rc: 201
+      body: "{\"ip\": \"192.168.1.0\", \"netmaskCIDR\": 24, \"gw\": \"0.0.0.0\", \"device\": \"eth0\"}"
+      exp_body: "{\"ip\": \"192.168.1.0\", \"netmaskCIDR\": 24, \"gw\": \"0.0.0.0\", \"device\": \"eth0\"}"
+    # GET newly inserted rule
+    - title: "GET#05"
+      url: "/api/v1/routing/1"
+      method: GET
+      exp_rc: 200
+      exp_body: "{\"ip\": \"192.168.1.0\", \"netmaskCIDR\": 24, \"gw\": \"0.0.0.0\", \"device\": \"eth0\"}"
+    # Duplicate POST request
+    - title: "POST#07"
+      url: "/api/v1/routing/1"
+      method: POST
+      body: "{\"ip\": \"192.168.1.0\", \"netmaskCIDR\": 24, \"gw\": \"0.0.0.0\", \"device\": \"eth0\"}"
+      exp_rc: 409
+    # Second rule POST request
+    - title: "POST#08"
+      url: "/api/v1/routing/2"
+      method: POST
+      exp_rc: 201
+      body: "{\"ip\": \"0.0.0.0\", \"netmaskCIDR\": 0, \"gw\": \"192.168.1.254\", \"device\": \"eth0\"}"
+      exp_body: "{\"ip\": \"0.0.0.0\", \"netmaskCIDR\": 0, \"gw\": \"192.168.1.254\", \"device\": \"eth0\"}"
+    # Second rule PUT request - all fields
+    - title: "PUT#01"
+      url: "/api/v1/routing/2"
+      method: PUT
+      exp_rc: 200
+      body: "{\"ip\": \"0.0.0.0\", \"netmaskCIDR\": 0, \"gw\": \"192.168.1.253\", \"device\": \"eth0\"}"
+      exp_body: "{\"ip\": \"0.0.0.0\", \"netmaskCIDR\": 0, \"gw\": \"192.168.1.253\", \"device\": \"eth0\"}"
+    # Second rule PUT request - only some fields
+    - title: "PUT#02"
+      url: "/api/v1/routing/2"
+      method: PUT
+      exp_rc: 200
+      body: "{\"gw\": \"192.168.1.254\"}"
+      exp_body: "{\"ip\": \"0.0.0.0\", \"netmaskCIDR\": 0, \"gw\": \"192.168.1.254\", \"device\": \"eth0\"}"
+    # Third rule PUT request - unexisting rule id
+    - title: "PUT#03"
+      url: "/api/v1/routing/3"
+      method: PUT
+      exp_rc: 404
+      body: "{\"gw\": \"192.168.1.254\"}"
+    # Third rule POST request
+    - title: "POST#09"
+      url: "/api/v1/routing/3"
+      method: POST
+      exp_rc: 201
+      body: "{\"ip\": \"192.168.1.0\", \"netmaskCIDR\": 24, \"gw\": \"0.0.0.0\", \"device\": \"eth0\"}"
+      exp_body: "{\"ip\": \"192.168.1.0\", \"netmaskCIDR\": 24, \"gw\": \"0.0.0.0\", \"device\": \"eth0\"}"
+    # Third rule DELETE request
+    - title: "DELETE#01"
+      url: "/api/v1/routing/3"
+      method: DELETE
+      exp_rc: 204
+    # Check list of rules
+    - title: "GET#06"
+      url: "/api/v1/routing"
+      method: GET
+      exp_rc: 200
+      exp_body: "[\"1\", \"2\"]"
+    # Submit routing request
+    - title: "POST#10"
+      url: "/api/v1/routing"
+      method: POST
+      exp_rc: 200
+      body: "192.168.1.10"
+      exp_body: "1"
+    # Submit routing request
+    - title: "POST#11"
+      url: "/api/v1/routing"
+      method: POST
+      exp_rc: 200
+      body: "192.168.2.10"
+      exp_body: "2"
+    # Third rule POST request (again)
+    - title: "POST#09"
+      url: "/api/v1/routing/3"
+      method: POST
+      exp_rc: 201
+      body: "{\"ip\": \"192.168.1.0\", \"netmaskCIDR\": 25, \"gw\": \"192.168.1.126\", \"device\": \"eth0\"}"
+      exp_body: "{\"ip\": \"192.168.1.0\", \"netmaskCIDR\": 25, \"gw\": \"192.168.1.126\", \"device\": \"eth0\"}"
+    # Check list of rules
+    - title: "GET#06"
+      url: "/api/v1/routing"
+      method: GET
+      exp_rc: 200
+      exp_body: "[\"3\", \"1\", \"2\"]"
+    # Submit routing request
+    - title: "POST#11"
+      url: "/api/v1/routing"
+      method: POST
+      exp_rc: 200
+      body: "192.168.1.10"
+      exp_body: "3"
+    # Submit routing request
+    - title: "POST#12"
+      url: "/api/v1/routing"
+      method: POST
+      exp_rc: 200
+      body: "192.168.1.130"
+      exp_body: "q1"
