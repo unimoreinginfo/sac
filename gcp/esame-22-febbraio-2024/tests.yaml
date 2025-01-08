@@ -1,0 +1,87 @@
+- api_name: "uaas"
+  tests:
+    # CLEAN
+    - title: "clean"
+      url: "/api/v1/clean"
+      method: GET
+      exp_rc: 200
+    # Wrong GET requests
+    - title: "GET#01"
+      url: "/api/v1/cantiere/1"
+      method: GET
+      exp_rc: 404
+    - title: "GET#03"
+      url: "/api/v1/umarell/1"
+      method: GET
+      exp_rc: 404
+    # Wrong POST requests for cantiere
+    - title: "POST#01"
+      url: "/api/v1/cantiere/1"
+      method: POST
+      body: "{}"
+      exp_rc: 400
+    - title: "POST#02"
+      url: "/api/v1/cantiere/1"
+      method: POST
+      body: "{\"indirizzo\": \"Via Vivarelli 10\"}"
+      exp_rc: 400
+    - title: "POST#02"
+      url: "/api/v1/cantiere/1"
+      method: POST
+      body: "{\"indirizzo\": \"Via Vivarelli 10\", \"cap\": \"abc\"}"
+      exp_rc: 400
+      # Correct POST request for cantiere
+    - title: "POST#03"
+      url: "/api/v1/cantiere/1"
+      method: POST
+      body: "{\"indirizzo\": \"Via Vivarelli 10\", \"cap\": 41125}"
+      exp_rc: 201
+      exp_body: "{\"indirizzo\": \"Via Vivarelli 10\", \"cap\": 41125}"
+      # Retrieve record
+    - title: "GET#05"
+      url: "/api/v1/cantiere/1"
+      method: GET
+      exp_rc: 200
+      exp_body: "{\"indirizzo\": \"Via Vivarelli 10\", \"cap\": 41125}"
+      # conflict
+    - title: "POST#04"
+      url: "/api/v1/cantiere/1"
+      method: POST
+      body: "{\"indirizzo\": \"Via Vivarelli 10\", \"cap\": 41125}"
+      exp_rc: 409
+      # Wrong POST requests for umarell
+    - title: "POST#05"
+      url: "/api/v1/umarell/1"
+      method: POST
+      body: "{}"
+      exp_rc: 400
+    - title: "POST#06"
+      url: "/api/v1/umarell/1"
+      method: POST
+      body: "{\"nome\": \"Mario\"}"
+      exp_rc: 400
+    - title: "POST#07"
+      url: "/api/v1/umarell/1"
+      method: POST
+      body: "{\"nome\": \"Mario\", \"cognome\": \"Rossi\"}"
+      exp_rc: 400
+      # Correct POST request for umarell
+    - title: "POST#08"
+      url: "/api/v1/umarell/1"
+      method: POST
+      body: "{\"nome\": \"Mario\", \"cognome\": \"Rossi\", \"cap\": 41125}"
+      exp_rc: 201
+      exp_body: "{\"nome\": \"Mario\", \"cognome\": \"Rossi\", \"cap\": 41125}"
+      # Retrieve record
+    - title: "GET#06"
+      url: "/api/v1/umarell/1"
+      method: GET
+      exp_rc: 200
+      exp_body: "{\"nome\": \"Mario\", \"cognome\": \"Rossi\", \"cap\": 41125}"
+      # conflict
+    - title: "POST#09"
+      url: "/api/v1/umarell/1"
+      method: POST
+      body: "{\"nome\": \"Mario\", \"cognome\": \"Rossi\", \"cap\": 41125}"
+      exp_rc: 409
+

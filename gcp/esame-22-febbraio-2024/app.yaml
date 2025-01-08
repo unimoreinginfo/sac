@@ -1,0 +1,7 @@
+runtime: python311
+handlers:
+- url: /static
+  static_dir: static
+- url: /.*
+  secure: always
+  script: auto

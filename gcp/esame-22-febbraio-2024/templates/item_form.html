@@ -1,0 +1,84 @@
+<html>
+    <link rel="stylesheet" href="/static/style.css">
+<head>Item</head>
+<body>
+
+
+
+<form method="POST">
+    <table>
+        <tr>
+            <td>{{form.cap.label}}</td>
+            <td>{{form.cap}}</td>
+        </tr>
+        <tr>
+            <td>{{form.umarell.label}}</td>
+            <td>{{form.umarell}}</td>
+        </tr>
+        <tr>
+            <td>{{form.cantiere.label}}</td>
+            <td>{{form.cantiere}}</td>
+        </tr>
+        <tr>
+            <td>{{form.both.label}}</td>
+            <td>{{form.both}}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Send"></td>
+        </tr>
+     </table>
+</form>
+
+<a>Lista di umarells</a>
+<ul>
+    {%for item in umarells%}
+    {% for key, value in item.items() %}
+        <li>
+            <strong>{{ key }}:</strong>
+            {% if value is mapping %}
+                <ul>
+                    {% for sub_key, sub_value in value.items() %}
+                        <li>{{ sub_key }}: {{ sub_value }}</li>
+                    {% endfor %}
+                </ul>
+            {% elif value is iterable and value is not string %}
+                <ul>
+                    {% for item in value %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                {{ value }}
+            {% endif %}
+        </li>
+    {% endfor %}
+    {% endfor %}
+    </ul>
+    <a>Lista di cantieri</a>
+    <ul>
+        {%for item in cantieri%}
+        {% for key, value in item.items() %}
+            <li>
+                <strong>{{ key }}:</strong>
+                {% if value is mapping %}
+                    <ul>
+                        {% for sub_key, sub_value in value.items() %}
+                            <li>{{ sub_key }}: {{ sub_value }}</li>
+                        {% endfor %}
+                    </ul>
+                {% elif value is iterable and value is not string %}
+                    <ul>
+                        {% for item in value %}
+                            <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    {{ value }}
+                {% endif %}
+            </li>
+        {% endfor %}
+        {% endfor %}
+
+        </ul>
+</html>

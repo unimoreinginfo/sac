@@ -1,0 +1,9 @@
+runtime: python39
+service: api
+entrypoint: gunicorn api:app
+handlers:
+  - url: /static
+    static_dir: static
+  - url: /.*
+    secure: always
+    script: auto

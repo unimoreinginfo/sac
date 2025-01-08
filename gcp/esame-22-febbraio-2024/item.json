@@ -1,0 +1,12 @@
+[
+    {
+      "id": 1,
+      "indirizzo": "Via Vivarelli 10",
+      "cap": 41125
+    },
+    {
+      "id" : 2,
+      "indirizzo": "Viale Caduti in Guerra 127",
+      "cap": 41121
+    }
+]

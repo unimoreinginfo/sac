@@ -1,0 +1,110 @@
+swagger: "2.0"
+info:
+  title: "Exam"
+  description: "API for the SAC exa,"
+  version: "1.0.0"
+host: "umarell.appspot.com"
+basePath: "/api/v1"
+schemes:
+  - "https"
+paths:
+    /umarell/{idumarell}:
+        parameters:
+        - name: idumarell
+          in: path
+          description: 'Umarell identifier'
+          type: integer
+          required: true
+        get:
+          description: "Get Umarell from id"
+          operationId: "umarellGet"
+          responses:
+              200:
+                  description: "Success."
+                  schema:
+                      $ref: "#/definitions/Umarell"
+              404:
+                  description: "Umarell not found"
+        post:
+          description: "add a new Umarell"
+          operationId: "umarellPost"
+          consumes:
+              - application/json
+          parameters:
+          - in: body
+            name: umarell
+            description: "Umarell object"
+            schema:
+              $ref: "#/definitions/Umarell"
+            required: true 
+          responses:
+              201:
+                  description: "Umarell added."
+              400:
+                  description: "Invalid item"
+              409:
+                  description: "Already inserted"
+    /cantiere/{idCantiere}:
+        parameters:
+        - name: idCantiere
+          in: path
+          description: 'Cantiere identifier'
+          type: integer
+          required: true
+        get:
+          description: "Get Cantiere from id"
+          operationId: "cantiereGet"
+          responses:
+              200:
+                  description: "Success."
+                  schema:
+                      $ref: "#/definitions/Cantiere"
+              404:
+                  description: "color not found"
+        post:
+          description: "add a new Cantiere"
+          operationId: "CantierePost"
+          consumes:
+              - application/json
+          parameters:
+          - in: body
+            name: cantiere
+            description: "Cantiere object"
+            schema:
+              $ref: "#/definitions/Cantiere"
+            required: true 
+          responses:
+              201:
+                  description: "Cantiere added."
+              400:
+                  description: "Invalid Cantiere"
+              409:
+                  description: "Already inserted"
+    /clean:
+        get:
+          description: "Cleans the DB"
+          operationId: "DBClean"
+          responses:
+              200:
+                  description: "Success."
+definitions:
+    Umarell:
+      type: object
+      properties: 
+        id: 
+          type: integer
+        nome: 
+          type: string
+        cognome: 
+          type: string
+        cap: 
+          type: integer
+    Cantiere:
+      type: object
+      properties: 
+        id: 
+          type: integer
+        indirizzo: 
+          type: string
+        cap: 
+          type: integer

@@ -1,0 +1,30 @@
+<html>
+    <link rel="stylesheet" href="/static/style.css">
+<head>Item</head>
+<body>
+<ul>
+    {% for key, value in item.items() %}
+        <li>
+            <strong>{{ key }}:</strong>
+            {% if value is mapping %}
+                <ul>
+                    {% for sub_key, sub_value in value.items() %}
+                        <li>{{ sub_key }}: {{ sub_value }}</li>
+                    {% endfor %}
+                </ul>
+            {% elif value is iterable and value is not string %}
+                <ul>
+                    {% for item in value %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                {{ value }}
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+
+
+</body>
+</html>
