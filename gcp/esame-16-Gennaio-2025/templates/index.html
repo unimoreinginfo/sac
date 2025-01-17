@@ -1,0 +1,19 @@
+<html>
+<head>Home</head>
+<body></body>
+<ul>
+<li>
+    <h1>Welcome to the Web App</h1>
+    <p>Available Routes:</p>
+    <ul>
+        {% for route in routes %}
+            <li><a href="/{{ route }}">{{ route }}</a></li>
+        {% endfor %}
+    </ul>
+    
+</li>
+</ul>
+
+
+
+</html>

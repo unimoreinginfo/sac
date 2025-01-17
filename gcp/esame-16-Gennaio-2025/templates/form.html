@@ -1,0 +1,34 @@
+<html>
+    <h1> Inserisciti per il secret santa!</h1>
+    <form method="POST">
+        <table>
+            <tr>
+                <td>{{form1.email.label}}</td>
+                <td>{{form1.email}}</td>
+            </tr>
+            <tr>
+                <td>{{form1.nome.label}}</td>
+                <td>{{form1.nome}}</td>
+            </tr>
+            <tr>
+                <td>{{form1.cognome.label}}</td>
+                <td>{{form1.cognome}}</td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Inserisciti!"></td>
+            </tr>
+         </table>
+    </form>
+    {{errore}}
+    <form method="POST">
+        <table>
+            <tr>
+                <td>{{form2.email2.label}}</td>
+                <td>{{form2.email2}}</td>
+            </tr>
+                <td><input type="submit" value="Cerca il tuo destinatario!"></td>
+            </tr>
+         </table>
+    </form>
+    {{errore2}}
+</html>
