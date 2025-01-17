@@ -1,0 +1,8 @@
+flask == 2.3.3
+flask-restful
+WTForms
+requests
+google-cloud-firestore
+google-cloud-pubsub 
+gunicorn
+numpy
