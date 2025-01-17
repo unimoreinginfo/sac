@@ -31,7 +31,7 @@ def send_message(message):
                 publisher.publish(topic_path, json.dumps(message_p).encode('utf-8'))
 
             else: 
-                message_p = f'Risposta: Ehi {name}, sembra che ci sia stato un problema'
+                message_p = f'Risposta: Ehi {email}, sembra che ci sia stato un problema'
                 publisher.publish(topic_path, json.dumps(message_p).encode('utf-8'))
         else:
             message_p = f'Risposta: La mail {email} non e valida (Uso protocollo: Richiesta: <email>)'
